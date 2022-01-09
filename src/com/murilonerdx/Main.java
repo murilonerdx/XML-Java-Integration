@@ -14,6 +14,16 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
+        lerUmItem();
+
+        lerMuitosItems();
+
+        lerObjetoItem();
+
+
+    }
+
+    public static void lerUmItem() throws IOException, SAXException, ParserConfigurationException {
         DocumentBuilderFactory fabrica = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = fabrica.newDocumentBuilder();
 
@@ -24,5 +34,37 @@ public class Main {
         String formaDePagamento = item.getTextContent();
 
         System.out.println(formaDePagamento);
+    }
+
+    public static void lerMuitosItems() throws IOException, SAXException, ParserConfigurationException {
+        DocumentBuilderFactory fabrica = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = fabrica.newDocumentBuilder();
+        Document document = builder.parse("src/com/murilonerdx/vendas.xml");
+
+        NodeList produtos = document.getElementsByTagName("nome");
+
+        for (int i = 0; i < produtos.getLength(); i++) {
+            Element produto = (Element) produtos.item(i);
+            String nome = produto.getTextContent();
+            System.out.println(nome);
+
+        }
+    }
+
+    public static void lerObjetoItem() throws IOException, SAXException, ParserConfigurationException{
+        DocumentBuilderFactory fabrica = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = fabrica.newDocumentBuilder();
+
+        Document document = builder.parse("src/com/murilonerdx/vendas.xml");
+        NodeList produtos = document.getElementsByTagName("produto");
+
+        for(int i = 0;i < produtos.getLength();i++) {
+            Element produto = (Element) produtos.item(i);
+            String nome = produto.getElementsByTagName("nome").item(0).getTextContent();
+            double preco = Double.parseDouble(produto.getElementsByTagName("preco").item(0).getTextContent());
+            Produto prod = new Produto(nome, preco);
+
+            System.out.println(prod);
+        }
     }
 }
